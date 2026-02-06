@@ -6,7 +6,9 @@ import {
   updateEvent,
   deleteEvent,
   getEventAttendees,
-  cancelEvent
+  cancelEvent,
+  registerForEvent,       
+  unregisterFromEvent    
 } from '../controllers/eventController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
