@@ -1,0 +1,235 @@
+
+.footer {
+  background: linear-gradient(to bottom, var(--gray-900), var(--black));
+  color: var(--gray-300);
+  padding: var(--spacing-16) 0 var(--spacing-8);
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle pattern overlay */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.footer .container {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-10);
+  margin-bottom: var(--spacing-12);
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.footer-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: 1.5rem;
+  color: var(--white);
+  margin-bottom: var(--spacing-2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+}
+
+.footer-description {
+  color: var(--gray-400);
+  line-height: 1.7;
+  font-size: 0.938rem;
+}
+
+.footer-heading {
+  color: var(--white);
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-2);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.footer-links a {
+  color: var(--gray-400);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  display: inline-block;
+  font-size: 0.938rem;
+  position: relative;
+}
+
+.footer-links a::before {
+  content: '→';
+  position: absolute;
+  left: -20px;
+  opacity: 0;
+  transition: all var(--transition-base);
+  color: var(--primary);
+}
+
+.footer-links a:hover {
+  color: var(--primary-light);
+  transform: translateX(8px);
+}
+
+.footer-links a:hover::before {
+  opacity: 1;
+  left: -16px;
+}
+
+.footer-contact {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  color: var(--gray-400);
+  font-size: 0.938rem;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: color var(--transition-base);
+}
+
+.footer-contact li:hover {
+  color: var(--primary-light);
+}
+
+/* Social Links - Enhanced */
+.social-links {
+  display: flex;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-2);
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gray-400);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  font-size: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.social-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.social-link svg {
+  position: relative;
+  z-index: 1;
+  transition: transform var(--transition-base);
+}
+
+.social-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  border-color: var(--primary);
+}
+
+.social-link:hover::before {
+  opacity: 1;
+}
+
+.social-link:hover svg {
+  transform: scale(1.2);
+  color: var(--white);
+}
+
+/* Footer Bottom - Enhanced */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--spacing-8);
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.footer-bottom p {
+  margin: var(--spacing-2) 0;
+  font-size: 0.875rem;
+}
+
+.footer-bottom p:first-child {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-12) 0 var(--spacing-6);
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+  }
+
+  .footer-section:first-child {
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* Animation delays for stagger effect */
+.footer-section:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.footer-section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.footer-section:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.footer-section:nth-child(4) {
+  animation-delay: 0.4s;
+}

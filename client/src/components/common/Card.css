@@ -1,0 +1,73 @@
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  padding: var(--spacing-6);
+  border: 1px solid var(--gray-100);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Gradient Border Effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-no-padding {
+  padding: 0;
+}
+
+/* Hover Effect - Apple Style */
+.card-hover:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-8px);
+  border-color: var(--gray-200);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:active {
+  transform: translateY(-4px);
+  transition: transform var(--transition-fast);
+}
+
+/* Glassmorphism Variant */
+.card-glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Gradient Card Variant */
+.card-gradient {
+  background: var(--gradient-primary);
+  color: var(--white);
+}
+
+.card-gradient h1,
+.card-gradient h2,
+.card-gradient h3,
+.card-gradient h4,
+.card-gradient h5,
+.card-gradient h6,
+.card-gradient p {
+  color: var(--white);
+}
