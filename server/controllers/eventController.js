@@ -1,7 +1,6 @@
 import Event from '../models/Event.js';
 import Registration from '../models/Registration.js';
 import User from '../models/User.js';
-import Registration from '../models/Registration.js';
 // @desc    Get all events
 // @route   GET /api/events
 // @access  Public
