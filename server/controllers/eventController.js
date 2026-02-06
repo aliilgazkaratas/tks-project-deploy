@@ -359,8 +359,8 @@ export const registerForEvent = async (req, res) => {
 
     // Check if already registered
     const existingRegistration = await Registration.findOne({
-      userId: req.user._id,
-      eventId: req.params.id
+      user: req.user._id,
+      event: req.params.id
     });
 
     if (existingRegistration) {
@@ -369,8 +369,8 @@ export const registerForEvent = async (req, res) => {
 
     // Create registration
     const registration = await Registration.create({
-      userId: req.user._id,
-      eventId: req.params.id,
+      user: req.user._id,
+      event: req.params.id,
       status: 'attending'
     });
 
@@ -393,8 +393,8 @@ export const registerForEvent = async (req, res) => {
 export const unregisterFromEvent = async (req, res) => {
   try {
     const registration = await Registration.findOneAndDelete({
-      userId: req.user._id,
-      eventId: req.params.id
+      user: req.user._id,
+      event: req.params.id
     });
 
     if (!registration) {
