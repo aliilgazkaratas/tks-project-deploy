@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiCalendar, FiMapPin, FiUsers, FiClock, FiDollarSign } from 'react-icons/fi';
 import { useAuth } from '../../hooks/useAuth';
 import { formatDate, isPastDate, getRelativeTime } from '../../utils/dateFormatter';
 import { formatCurrency } from '../../utils/validators';
@@ -9,6 +8,7 @@ import Card from '../common/Card';
 import Modal from '../common/Modal';
 import './EventDetails.css';
 import eventService from '../../services/eventService';
+import { FiCalendar, FiMapPin, FiUsers, FiClock } from 'react-icons/fi';
 
 const EventDetails = ({ event, isRegistered, registration }) => {
   const { isAuthenticated } = useAuth();
@@ -77,7 +77,6 @@ const EventDetails = ({ event, isRegistered, registration }) => {
               <h2>About This Event</h2>
               <p className="event-description">{event.description}</p>
 
-              {/* Event Info */}
               <div className="event-info-grid">
                 <div className="info-item">
                   <FiCalendar className="info-icon" />
@@ -108,15 +107,9 @@ const EventDetails = ({ event, isRegistered, registration }) => {
                     )}
                   </div>
                 </div>
-
-                <div className="info-item">
-                  <FiDollarSign className="info-icon" />
-                  <div>
-                    <h4>Price</h4>
-                    <p className="info-price">{formatCurrency(event.price)}</p>
-                  </div>
-                </div>
               </div>
+
+
 
               {/* Organizer Info */}
               {event.createdBy && (
@@ -182,15 +175,11 @@ const EventDetails = ({ event, isRegistered, registration }) => {
                       loading={loading}
                       size="large"
                     >
-                      Register Now
+                      I Will Attend!
                     </Button>
                   )}
 
-                  <p className="registration-note">
-                    {isFull
-                      ? 'You will be added to the waitlist and notified if spots open up.'
-                      : 'You will be redirected to secure payment.'}
-                  </p>
+
                 </div>
               )}
 
@@ -243,9 +232,7 @@ const EventDetails = ({ event, isRegistered, registration }) => {
             <p>
               <strong>Location:</strong> {event.location}
             </p>
-            <p>
-              <strong>Price:</strong> {formatCurrency(event.price)}
-            </p>
+            
           </div>
 
           {isFull && (
@@ -271,7 +258,8 @@ const EventDetails = ({ event, isRegistered, registration }) => {
               loading={loading}
               fullWidth
             >
-              Proceed to Payment
+              Confirm Attendance
+
             </Button>
           </div>
         </div>

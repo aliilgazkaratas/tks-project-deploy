@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FiCalendar, FiMapPin, FiUsers } from 'react-icons/fi';
 import { formatDate, isPastDate } from '../../utils/dateFormatter';
-import { formatCurrency } from '../../utils/validators';
 import Card from '../common/Card';
 import './EventCard.css';
 
@@ -57,7 +56,6 @@ const EventCard = ({ event }) => {
           </p>
 
           <div className="event-card-footer">
-            <span className="event-price">{formatCurrency(event.price)}</span>
             <span className="event-link-text">View Details →</span>
           </div>
         </div>
