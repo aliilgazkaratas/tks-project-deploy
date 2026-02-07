@@ -1,0 +1,30 @@
+.static-page {
+  padding: 60px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.static-page h1 {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.static-page .date {
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.static-page section {
+  margin-bottom: 32px;
+}
+
+.static-page h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.static-page p {
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
