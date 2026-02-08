@@ -1,56 +1,179 @@
-import { FiMail, FiCalendar, FiAward } from 'react-icons/fi';
-import { formatShortDate } from '../../utils/dateFormatter';
-import Card from '../common/Card';
-import './ProfileCard.css';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import userService from '../services/userService';
+import './Profile.css';
 
-const ProfileCard = ({ user, stats }) => {
+const Profile = () => {
+  const { user, updateUser } = useAuth();
+  const [editing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    zodiac: user?.zodiac || '',
+    phoneNumber: user?.phoneNumber || '',
+    dateOfBirth: user?.dateOfBirth || '',
+    interests: user?.interests || []
+  });
+
+  const zodiacSigns = [
+    'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+    'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+  ];
+
+  const interestOptions = [
+    'Hiking', 'Photography', 'Food & Cooking', 'History & Culture',
+    'Adventure Sports', 'Art & Museums', 'Nightlife', 'Beach & Water Sports'
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const updated = await userService.updateProfile(formData);
+      updateUser(updated);
+      setEditing(false);
+      alert('Profile updated successfully!');
+    } catch (err) {
+      alert('Failed to update profile');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleInterest = (interest) => {
+    const newInterests = formData.interests.includes(interest)
+      ? formData.interests.filter(i => i !== interest)
+      : [...formData.interests, interest];
+    setFormData({...formData, interests: newInterests});
+  };
+
   return (
-    <Card className="profile-card">
-      <div className="profile-header">
-        <img
-          src={user.profilePicture}
-          alt={user.name}
-          className="profile-avatar-large"
-        />
-        <div className="profile-info">
-          <h2 className="profile-name">{user.name}</h2>
-          <p className="profile-role">
-            {user.role === 'admin' ? '👑 Admin' : '🌍 Member'}
-          </p>
-        </div>
-      </div>
-
-      <div className="profile-details">
-        <div className="detail-item">
-          <FiMail className="detail-icon" />
-          <span>{user.email}</span>
-        </div>
-        <div className="detail-item">
-          <FiCalendar className="detail-icon" />
-          <span>Member since {formatShortDate(user.createdAt)}</span>
-        </div>
-      </div>
-
-      {stats && (
-        <div className="profile-stats">
-          <div className="stat-box">
-            <FiAward className="stat-icon" />
-            <div>
-              <h3>{stats.totalEventsAttended || 0}</h3>
-              <p>Events Attended</p>
-            </div>
+    <div className="profile-page">
+      <div className="container">
+        <div className="profile-header">
+          <div className="profile-avatar">
+            {user?.name?.charAt(0).toUpperCase()}
           </div>
-          <div className="stat-box">
-            <span className="stat-icon">💰</span>
-            <div>
-              <h3>${stats.totalSpent?.toFixed(2) || '0.00'}</h3>
-              <p>Total Spent</p>
-            </div>
+          <div>
+            <h1>{user?.name}</h1>
+            <p>{user?.email}</p>
           </div>
         </div>
-      )}
-    </Card>
+
+        <div className="profile-content">
+          {!editing ? (
+            <div className="profile-view">
+              <div className="profile-info">
+                <div className="info-row">
+                  <strong>Zodiac Sign:</strong>
+                  <span>{user?.zodiac || 'Not set'}</span>
+                </div>
+                <div className="info-row">
+                  <strong>Phone:</strong>
+                  <span>{user?.phoneNumber || 'Not set'}</span>
+                </div>
+                <div className="info-row">
+                  <strong>Date of Birth:</strong>
+                  <span>{user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not set'}</span>
+                </div>
+                <div className="info-row">
+                  <strong>Interests:</strong>
+                  <div className="interests-display">
+                    {user?.interests?.length > 0 
+                      ? user.interests.map(i => <span key={i} className="interest-tag">{i}</span>)
+                      : 'Not set'}
+                  </div>
+                </div>
+              </div>
+              <button onClick={() => setEditing(true)} className="btn btn-primary">
+                Edit Profile
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="profile-form">
+              <div className="form-group">
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Zodiac Sign</label>
+                <select
+                  value={formData.zodiac}
+                  onChange={(e) => setFormData({...formData, zodiac: e.target.value})}
+                >
+                  <option value="">Select your zodiac</option>
+                  {zodiacSigns.map(sign => (
+                    <option key={sign} value={sign}>{sign}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input
+                  type="tel"
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
+                  placeholder="+90 XXX XXX XX XX"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Date of Birth</label>
+                <input
+                  type="date"
+                  value={formData.dateOfBirth}
+                  onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Interests</label>
+                <div className="interests-selector">
+                  {interestOptions.map(interest => (
+                    <button
+                      key={interest}
+                      type="button"
+                      className={`interest-btn ${formData.interests.includes(interest) ? 'active' : ''}`}
+                      onClick={() => toggleInterest(interest)}
+                    >
+                      {interest}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="btn btn-primary" disabled={loading}>
+                  {loading ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={() => setEditing(false)}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default ProfileCard;
+export default Profile;

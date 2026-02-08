@@ -32,24 +32,26 @@ const EventDetails = ({ event, isRegistered, registration }) => {
     setShowConfirmModal(true);
   };
 
-  const confirmRegistration = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Use event._id instead of eventId
-      await eventService.registerForEvent(event._id);
-      
-      setSuccess(true);
-      setShowConfirmModal(false);
-      // You might want to refresh the page or update registration status
-      window.location.reload(); // or use a better state management approach
-    } catch (err) {
-      setError(err.message || 'Registration failed');
-    } finally {
-      setLoading(false);
-    }
-  };  return (
+const confirmRegistration = async () => {
+  try {
+    setLoading(true);
+    setError(null);
+    
+    await eventService.registerForEvent(event._id);
+    
+    setSuccess(true);
+    setShowConfirmModal(false);
+    
+    // Refresh event data instead of full reload
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  } catch (err) {
+    setError(err.message || 'Registration failed');
+  } finally {
+    setLoading(false);
+  }
+};  return (
     <div className="event-details-container">
       {/* Hero Image */}
       <div className="event-hero">

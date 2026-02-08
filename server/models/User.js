@@ -19,6 +19,23 @@ const userSchema = new mongoose.Schema(
         'Please provide a valid email'
       ]
     },
+    zodiac: {
+  type: String,
+  enum: ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces', null],
+  default: null
+},
+phoneNumber: {
+  type: String,
+  default: null
+},
+dateOfBirth: {
+  type: Date,
+  default: null
+},
+interests: {
+  type: [String],
+  default: []
+},
     password: {
       type: String,
       required: [true, 'Please provide a password'],

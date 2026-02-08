@@ -33,8 +33,8 @@ export const getUserById = async (id) => {
 };
 
 // Update user role (admin only)
-export const updateUserRole = async (id, role) => {
-  const response = await api.put(`/api/users/${id}/role`, { role });
+updateUserRole: async (data) => {
+  const response = await api.put('/users/profile', data);
   return response.data;
 };
 
