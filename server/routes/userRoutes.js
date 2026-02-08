@@ -6,7 +6,9 @@ import {
   getAllUsers,
   getUserById,
   updateUserRole,
-  deleteUser
+  deleteUser,
+  updateProfile,      
+  changePassword
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 

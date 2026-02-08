@@ -287,10 +287,37 @@ export const changePassword = async (req, res) => {
     res.status(500).json({ message: 'Failed to change password' });
   }
 };
-// getUserProfile: Returns user data with populated attended events
-// getUserRegistrations: Filters by upcoming/past/waitlist
-// getAttendanceHistory: Shows past events with spending statistics
-// getAllUsers: Admin only, supports search and filtering
-// updateUserRole: Admin can promote/demote users (except themselves)
-// deleteUser: Prevents deletion if user has upcoming events
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, email, zodiac, phoneNumber, dateOfBirth, interests } = req.body;
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (zodiac) user.zodiac = zodiac;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (dateOfBirth) user.dateOfBirth = dateOfBirth;
+    if (interests) user.interests = interests;
+
+    await user.save();
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      zodiac: user.zodiac,
+      phoneNumber: user.phoneNumber,
+      dateOfBirth: user.dateOfBirth,
+      interests: user.interests
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Update failed', error: error.message });
+  }
+};
+
 
