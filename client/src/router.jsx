@@ -27,6 +27,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'events', element: <Events /> },
       { path: 'events/:id', element: <EventDetails /> },
+      { path: 'change-password', element: <ProtectedRoute><ChangePassword /></ProtectedRoute> },
       { path: 'blogs', element: <Blogs /> },
       { path: 'blogs/:id', element: <BlogPost /> },
       { path: 'login', element: <Login /> },

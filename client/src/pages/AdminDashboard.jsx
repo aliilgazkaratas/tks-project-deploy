@@ -20,12 +20,22 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <div className="container">
-        {/* Header */}
-        <div className="admin-header">
-          <div>
-            <h1>Admin Dashboard</h1>
-            <p>Welcome back, {user?.name}</p>
-          </div>
+        <h1>Admin Dashboard</h1>
+        
+        {/* ADD THIS SECTION */}
+        <div className="admin-navigation">
+          <Link to="/admin/blogs" className="admin-nav-card">
+            <h3>📝 Manage Blogs</h3>
+            <p>Create, edit, and publish blog posts</p>
+          </Link>
+          <Link to="/admin" className="admin-nav-card">
+            <h3>📅 Manage Events</h3>
+            <p>View and manage all events</p>
+          </Link>
+          <Link to="/profile" className="admin-nav-card">
+            <h3>👤 My Profile</h3>
+            <p>Update your admin profile</p>
+          </Link>
         </div>
 
         {/* Stats Cards */}

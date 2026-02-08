@@ -187,49 +187,37 @@ export const getUserById = async (req, res, next) => {
 // @desc    Update user role (admin only)
 // @route   PUT /api/users/:id/role
 // @access  Private/Admin
-export const updateUserRole = async (req, res, next) => {
+export const updateUserRole = async (req, res) => {
   try {
-    const { role } = req.body;
+    const { name, email, zodiac, phoneNumber, dateOfBirth, interests } = req.body;
 
-    if (!role || !['member', 'admin'].includes(role)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid role. Must be "member" or "admin"'
-      });
-    }
-
-    const user = await User.findById(req.params.id);
-
+    const user = await User.findById(req.user._id);
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Prevent admin from demoting themselves
-    if (user._id.toString() === req.user._id.toString() && role === 'member') {
-      return res.status(400).json({
-        success: false,
-        message: 'You cannot demote yourself'
-      });
-    }
+    // Update fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (zodiac) user.zodiac = zodiac;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (dateOfBirth) user.dateOfBirth = dateOfBirth;
+    if (interests) user.interests = interests;
 
-    user.role = role;
     await user.save();
 
-    res.status(200).json({
-      success: true,
-      message: `User role updated to ${role}`,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      zodiac: user.zodiac,
+      phoneNumber: user.phoneNumber,
+      dateOfBirth: user.dateOfBirth,
+      interests: user.interests
     });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: 'Update failed', error: error.message });
   }
 };
 
@@ -282,7 +270,23 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id).select('+password');
 
+    if (!(await user.matchPassword(currentPassword))) {
+      return res.status(401).json({ message: 'Current password is incorrect' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ message: 'Password changed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to change password' });
+  }
+};
 // getUserProfile: Returns user data with populated attended events
 // getUserRegistrations: Filters by upcoming/past/waitlist
 // getAttendanceHistory: Shows past events with spending statistics

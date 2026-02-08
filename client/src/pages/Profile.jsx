@@ -54,6 +54,9 @@ const Profile = () => {
             <Button fullWidth variant="secondary">
               Edit Profile
             </Button>
+            <Link to="/change-password" className="btn btn-secondary">
+  Change Password
+</Link>
           </aside>
 
           {/* Main Content */}
