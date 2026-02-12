@@ -28,11 +28,6 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'Please provide event location'],
       trim: true
     },
-    price: {
-      type: Number,
-      required: [true, 'Please provide event price'],
-      min: [0, 'Price cannot be negative']
-    },
     capacity: {
       type: Number,
       required: [true, 'Please provide event capacity'],

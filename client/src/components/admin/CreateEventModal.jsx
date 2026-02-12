@@ -12,7 +12,6 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
     description: '',
     date: '',
     location: '',
-    price: '',
     capacity: '',
     imageUrl: ''
   });
@@ -33,7 +32,6 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
       // Convert date to ISO format
       const eventData = {
         ...formData,
-        price: parseFloat(formData.price),
         capacity: parseInt(formData.capacity),
         date: new Date(formData.date).toISOString()
       };
@@ -46,7 +44,6 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
         description: '',
         date: '',
         location: '',
-        price: '',
         capacity: '',
         imageUrl: ''
       });
@@ -125,18 +122,6 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="price">Price (₺) *</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              placeholder="e.g., 750"
-              min="0"
-              step="0.01"
-              required
-            />
           </div>
 
           <div className="form-group">

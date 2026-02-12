@@ -30,14 +30,13 @@ const Footer = () => {
             </ul>
           </div>
           
-          <div className="footer-section">
-            <h4>Connect</h4>
-            <ul>
-              <li><a href="https://instagram.com/tks" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-              <li><a href="https://twitter.com/tks" target="_blank" rel="noopener noreferrer">Twitter</a></li>
-              <li><a href="mailto:info@tks.com">Email Us</a></li>
-            </ul>
-          </div>
+                <div className="footer-section">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/istanbul_tks/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="mailto:info@tksistanbul.com">info@tksistanbul.com</a></li>
+        </ul>
+      </div>
         </div>
         
         <div className="footer-bottom">

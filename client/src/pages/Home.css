@@ -36,19 +36,22 @@
   }
 }
 
-.hero-overlay {
-  width: 100%;
+.hero-section {
   position: relative;
-  z-index: 1;
-  padding: var(--spacing-20) 0;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1600');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-.hero-content {
-  text-align: center;
-  color: var(--white);
-  max-width: 900px;
-  margin: 0 auto;
-  animation: fadeInUp 1s ease-out;
+.hero-overlay {
+  width: 100%;
+  padding: 80px 20px;
 }
 
 @keyframes fadeInUp {
@@ -63,33 +66,25 @@
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  margin: 0 0 var(--spacing-6) 0;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  animation: fadeInUp 1s ease-out 0.2s both;
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  margin: 0 0 var(--spacing-8) 0;
+  font-size: 20px;
+  margin-bottom: 40px;
   opacity: 0.95;
   line-height: 1.6;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  font-weight: 400;
-  animation: fadeInUp 1s ease-out 0.4s both;
 }
 
 .hero-buttons {
   display: flex;
-  gap: var(--spacing-4);
+  gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
-  animation: fadeInUp 1s ease-out 0.6s both;
 }
 
 .hero-buttons a {

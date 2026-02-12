@@ -189,15 +189,6 @@
   margin-top: auto;
 }
 
-.event-price {
-  font-size: 1.75rem;
-  font-weight: 800;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
-}
 
 .event-link-text {
   color: var(--primary);
@@ -236,9 +227,7 @@
     font-size: 1.125rem;
   }
 
-  .event-price {
-    font-size: 1.5rem;
-  }
+
 }
 
 /* Loading State */

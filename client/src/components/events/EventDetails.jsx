@@ -136,10 +136,7 @@ const confirmRegistration = async () => {
           {/* Sidebar - Registration */}
           <div className="event-sidebar">
             <Card className="registration-card">
-              <div className="registration-price">
-                <span className="price-label">Price</span>
-                <span className="price-amount">{formatCurrency(event.price)}</span>
-              </div>
+
 
               {/* Registration Status */}
               {isRegistered && (

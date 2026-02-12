@@ -102,8 +102,6 @@ const EventList = ({ events, loading, filters, onFilterChange }) => {
             >
               <option value="date">Date (Earliest)</option>
               <option value="date-desc">Date (Latest)</option>
-              <option value="price-asc">Price (Low to High)</option>
-              <option value="price-desc">Price (High to Low)</option>
               <option value="popular">Most Popular</option>
             </select>
           </div>

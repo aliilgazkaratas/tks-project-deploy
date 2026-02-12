@@ -106,11 +106,7 @@
   font-weight: 600;
 }
 
-.info-price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-}
+
 
 .organizer-section {
   margin-top: 2rem;
@@ -158,27 +154,8 @@
   top: 100px;
 }
 
-.registration-price {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--gray-200);
-  margin-bottom: 1.5rem;
-}
 
-.price-label {
-  color: var(--gray-600);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 
-.price-amount {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary);
-}
 
 .registration-status {
   padding: 1.5rem;

@@ -30,8 +30,6 @@ export const getAllEvents = async (req, res, next) => {
     // Sort options
     let sortOption = { date: 1 }; // Default: upcoming first
     if (sort === 'date-desc') sortOption = { date: -1 };
-    if (sort === 'price-asc') sortOption = { price: 1 };
-    if (sort === 'price-desc') sortOption = { price: -1 };
     if (sort === 'popular') sortOption = { currentAttendees: -1 };
 
     // Execute query
@@ -100,10 +98,10 @@ export const getEventById = async (req, res, next) => {
 // @access  Private/Admin
 export const createEvent = async (req, res, next) => {
   try {
-    const { title, description, date, location, price, capacity, imageUrl } = req.body;
+    const { title, description, date, location, capacity, imageUrl } = req.body;
 
     // Validate required fields
-    if (!title || !description || !date || !location || price === undefined || !capacity) {
+    if (!title || !description || !date || !location  || !capacity) {
       return res.status(400).json({
         success: false,
         message: 'Please provide all required fields'
@@ -132,7 +130,6 @@ export const createEvent = async (req, res, next) => {
       description,
       date,
       location,
-      price,
       capacity,
       imageUrl: imageUrl || undefined,
       createdBy: req.user._id
@@ -156,7 +153,7 @@ export const createEvent = async (req, res, next) => {
 // @access  Private/Admin
 export const updateEvent = async (req, res, next) => {
   try {
-    const { title, description, date, location, price, capacity, imageUrl, status } = req.body;
+    const { title, description, date, location, capacity, imageUrl, status } = req.body;
 
     const event = await Event.findById(req.params.id);
 
@@ -196,7 +193,6 @@ export const updateEvent = async (req, res, next) => {
     if (description) event.description = description;
     if (date) event.date = date;
     if (location) event.location = location;
-    if (price !== undefined) event.price = price;
     if (capacity) event.capacity = capacity;
     if (imageUrl) event.imageUrl = imageUrl;
     if (status) event.status = status;

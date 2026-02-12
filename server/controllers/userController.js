@@ -1,99 +1,26 @@
-import User from '../models/User.js';
-import Registration from '../models/Registration.js';
-import Event from '../models/Event.js';
-
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
-export const getUserProfile = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user._id)
-      .select('-password')
-      .populate('attendedEvents', 'title date location imageUrl price');
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      user
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get user's registrations
-// @route   GET /api/users/registrations
-// @access  Private
-export const getUserRegistrations = async (req, res, next) => {
-  try {
-    const { status } = req.query; // upcoming, past, waitlist
-
-    // Build query
-    const query = { user: req.user._id };
-
-    // Get all registrations
-    const registrations = await Registration.find(query)
-      .populate('event')
-      .sort({ registeredAt: -1 });
-
-    // Filter based on status
-    let filteredRegistrations = registrations;
-
-    if (status === 'upcoming') {
-      filteredRegistrations = registrations.filter(
-        reg => new Date(reg.event.date) > new Date() && !reg.waitlist  === 'completed'
-      );
-    } else if (status === 'past') {
-      filteredRegistrations = registrations.filter(
-        reg => new Date(reg.event.date) < new Date()  === 'completed'
-      );
-    } else if (status === 'waitlist') {
-      filteredRegistrations = registrations.filter(reg => reg.waitlist);
-    }
-
-    res.status(200).json({
-      success: true,
-      count: filteredRegistrations.length,
-      registrations: filteredRegistrations
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // @desc    Get user's attendance history
 // @route   GET /api/users/attendance
 // @access  Private
 export const getAttendanceHistory = async (req, res, next) => {
   try {
-    // Get all past events the user attended
-    const pastRegistrations = await Registration.find({
-      user: req.user._id,
-      
-      waitlist: false
+    // Get all registrations for the user
+    const registrations = await Registration.find({
+      user: req.user._id
     })
       .populate('event')
-      .sort({ 'event.date': -1 });
+      .sort({ registeredAt: -1 });
 
-    // Filter only past events
-    const pastEvents = pastRegistrations
-      .filter(reg => new Date(reg.event.date) < new Date())
+    // Filter out null events and past events only
+    const pastEvents = registrations
+      .filter(reg => reg.event !== null && new Date(reg.event.date) < new Date())
       .map(reg => ({
         event: reg.event,
-        registeredAt: reg.registeredAt,
-        amount: reg.amount
+        registeredAt: reg.registeredAt
       }));
 
     // Calculate statistics
     const stats = {
       totalEventsAttended: pastEvents.length,
-      totalSpent: pastEvents.reduce((sum, item) => sum + item.amount, 0),
       memberSince: req.user.createdAt
     };
 
@@ -103,221 +30,48 @@ export const getAttendanceHistory = async (req, res, next) => {
       history: pastEvents
     });
   } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get all users (admin only)
-// @route   GET /api/users
-// @access  Private/Admin
-export const getAllUsers = async (req, res, next) => {
-  try {
-    const { search, role, page = 1, limit = 20 } = req.query;
-
-    // Build query
-    const query = {};
-
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } }
-      ];
-    }
-
-    if (role) {
-      query.role = role;
-    }
-
-    // Pagination
-    const skip = (page - 1) * limit;
-
-    // Get users
-    const users = await User.find(query)
-      .select('-password')
-      .sort({ createdAt: -1 })
-      .limit(parseInt(limit))
-      .skip(skip);
-
-    const total = await User.countDocuments(query);
-
-    res.status(200).json({
-      success: true,
-      count: users.length,
-      total,
-      page: parseInt(page),
-      pages: Math.ceil(total / limit),
-      users
+    res.status(500).json({
+      success: false,
+      message: error.message
     });
-  } catch (error) {
-    next(error);
   }
 };
 
-// @desc    Get user by ID (admin only)
-// @route   GET /api/users/:id
-// @access  Private/Admin
-export const getUserById = async (req, res, next) => {
+// @desc    Get user's registrations  
+// @route   GET /api/users/registrations
+// @access  Private
+export const getUserRegistrations = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-      .select('-password')
-      .populate('attendedEvents', 'title date location');
+    const { status } = req.query;
 
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
+    const query = { user: req.user._id };
 
-    // Get user's registrations
-    const registrations = await Registration.find({ user: user._id })
-      .populate('event', 'title date location price')
+    const registrations = await Registration.find(query)
+      .populate('event')
       .sort({ registeredAt: -1 });
 
-    res.status(200).json({
-      success: true,
-      user,
-      registrations
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+    // Filter out null events
+    let filteredRegistrations = registrations.filter(r => r.event !== null);
 
-// @desc    Update user role (admin only)
-// @route   PUT /api/users/:id/role
-// @access  Private/Admin
-export const updateUserRole = async (req, res) => {
-  try {
-    const { name, email, zodiac, phoneNumber, dateOfBirth, interests } = req.body;
-
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    if (status === 'upcoming') {
+      filteredRegistrations = filteredRegistrations.filter(
+        reg => new Date(reg.event.date) > new Date()
+      );
+    } else if (status === 'past') {
+      filteredRegistrations = filteredRegistrations.filter(
+        reg => new Date(reg.event.date) < new Date()
+      );
     }
-
-    // Update fields
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (zodiac) user.zodiac = zodiac;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (dateOfBirth) user.dateOfBirth = dateOfBirth;
-    if (interests) user.interests = interests;
-
-    await user.save();
-
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      zodiac: user.zodiac,
-      phoneNumber: user.phoneNumber,
-      dateOfBirth: user.dateOfBirth,
-      interests: user.interests
-    });
-  } catch (error) {
-    res.status(500).json({ message: 'Update failed', error: error.message });
-  }
-};
-
-// @desc    Delete user (admin only)
-// @route   DELETE /api/users/:id
-// @access  Private/Admin
-export const deleteUser = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
-
-    // Prevent admin from deleting themselves
-    if (user._id.toString() === req.user._id.toString()) {
-      return res.status(400).json({
-        success: false,
-        message: 'You cannot delete yourself'
-      });
-    }
-
-    // Check if user has upcoming registrations
-    const upcomingRegistrations = await Registration.find({
-      user: user._id
-      
-    }).populate('event');
-
-    const hasUpcoming = upcomingRegistrations.some(
-      reg => new Date(reg.event.date) > new Date()
-    );
-
-    if (hasUpcoming) {
-      return res.status(400).json({
-        success: false,
-        message: 'Cannot delete user with upcoming event registrations. Cancel registrations first.'
-      });
-    }
-
-    await user.deleteOne();
 
     res.status(200).json({
       success: true,
-      message: 'User deleted successfully'
+      count: filteredRegistrations.length,
+      registrations: filteredRegistrations
     });
   } catch (error) {
-    next(error);
-  }
-};
-export const changePassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.user._id).select('+password');
-
-    if (!(await user.matchPassword(currentPassword))) {
-      return res.status(401).json({ message: 'Current password is incorrect' });
-    }
-
-    user.password = newPassword;
-    await user.save();
-
-    res.json({ message: 'Password changed successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to change password' });
-  }
-};
-export const updateProfile = async (req, res) => {
-  try {
-    const { name, email, zodiac, phoneNumber, dateOfBirth, interests } = req.body;
-
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (zodiac) user.zodiac = zodiac;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (dateOfBirth) user.dateOfBirth = dateOfBirth;
-    if (interests) user.interests = interests;
-
-    await user.save();
-
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      zodiac: user.zodiac,
-      phoneNumber: user.phoneNumber,
-      dateOfBirth: user.dateOfBirth,
-      interests: user.interests
+    res.status(500).json({
+      success: false,
+      message: error.message
     });
-  } catch (error) {
-    res.status(500).json({ message: 'Update failed', error: error.message });
   }
 };
-
-
