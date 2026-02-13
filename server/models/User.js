@@ -41,11 +41,11 @@ interests: {
       required: [true, 'Please provide a password'],
       minlength: [6, 'Password must be at least 6 characters'],
       select: false
-    },
+        },
     role: {
       type: String,
-      enum: ['member', 'admin'],
-      default: 'member'
+      enum: ['user', 'admin'],  // Changed 'member' to 'user'
+      default: 'user'
     },
     googleId: {
       type: String,
@@ -65,15 +65,14 @@ interests: {
   }
 );
 
-// Hash password before saving
-userSchema.pre('save', async function() {
-  // Only hash if password is modified
+userSchema.pre('save', async function(next) {  // Add 'next' parameter
   if (!this.isModified('password')) {
-    return;
+    return next();  // Call next()
   }
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();  // Call next() when done
 });
 
 // Method to compare entered password with hashed password

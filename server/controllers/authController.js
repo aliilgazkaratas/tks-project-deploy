@@ -15,14 +15,11 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // REDUCE from 12 to 10 for faster registration
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    // REMOVE manual hashing - let User model handle it
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,  // Pass plain password, model will hash it
       role: 'user'
     });
 
