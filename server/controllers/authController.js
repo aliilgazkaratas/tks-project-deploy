@@ -1,87 +1,45 @@
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 import { sendEmail } from '../utils/emailService.js';
+import bcrypt from 'bcryptjs';
 
 // @desc    Register new user
 // @route   POST /api/auth/register
 // @access  Public
-export const register = async (req, res, next) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if all fields are provided
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide all required fields'
-      });
-    }
-
-    // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({
-        success: false,
-        message: 'User already exists with this email'
-      });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Validate password length
-    if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'Password must be at least 6 characters'
-      });
-    }
+    // REDUCE from 12 to 10 for faster registration
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user (password will be hashed by pre-save hook)
     const user = await User.create({
       name,
       email,
-      password
+      password: hashedPassword,
+      role: 'user'
     });
 
-    // Generate JWT token
     const token = generateToken(user._id);
 
-    // Send welcome email
-    try {
-      await sendEmail({
-        to: user.email,
-        subject: 'Welcome to TKS Travel Society!',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #667eea;">Welcome to TKS Travel Society!</h1>
-            <p>Hi ${user.name},</p>
-            <p>Thank you for joining our community. We're excited to have you on board!</p>
-            <p>Explore our upcoming events and join us on amazing adventures.</p>
-            <a href="${process.env.CLIENT_URL}/events" style="display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">Browse Events</a>
-            <p>Best regards,<br>The TKS Travel Society Team</p>
-          </div>
-        `
-      });
-    } catch (emailError) {
-      console.error('Welcome email failed:', emailError.message);
-      // Don't fail registration if email fails
-    }
-
-    // Send response
     res.status(201).json({
-      success: true,
-      message: 'Registration successful',
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        profilePicture: user.profilePicture
-      }
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token
     });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: 'Registration failed', error: error.message });
   }
 };
+
 
 // @desc    Login user
 // @route   POST /api/auth/login

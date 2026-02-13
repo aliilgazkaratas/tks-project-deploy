@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { formatDate, isPastDate, getRelativeTime } from '../../utils/dateFormatter';
-import { formatCurrency } from '../../utils/validators';
 import Button from '../common/Button';
 import Card from '../common/Card';
 import Modal from '../common/Modal';
@@ -238,8 +237,7 @@ const confirmRegistration = async () => {
             <div className="waitlist-notice">
               <p>
                 ⚠️ This event is currently full. You will be added to the
-                waitlist. Payment will only be processed if a spot becomes
-                available.
+                waitlist. 
               </p>
             </div>
           )}

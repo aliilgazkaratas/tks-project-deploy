@@ -1,23 +1,37 @@
 import './StaticPage.css';
 
 const About = () => (
-  <div className="static-page">
-    <div className="container">
-      <h1>About TKS Travel Society</h1>
-      
-      <section>
-        <h2>Our Mission</h2>
-        <p>TKS Travel Society connects travel enthusiasts in Istanbul, creating memorable experiences through curated events and adventures.</p>
+  <div className="about-page">
+    <div className="about-hero" style={{
+      backgroundImage: 'url(/clients/public/tks.png)',
+      height: '400px',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
+      <div className="container">
+        <h1 style={{color: 'white', paddingTop: '150px'}}>About TKS Travel Society</h1>
+      </div>
+    </div>
+    
+    <div className="container" style={{padding: '60px 20px'}}>
+      <section style={{marginBottom: '60px'}}>
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center'}}>
+          <div>
+            <h2>Our Mission</h2>
+            <p>TKS Travel Society connects travel enthusiasts in Istanbul...</p>
+          </div>
+          <img src="/images/team.jpg" alt="Our Team" style={{width: '100%', borderRadius: '12px'}} />
+        </div>
       </section>
 
-      <section>
-        <h2>What We Do</h2>
-        <p>We organize cultural events, travel trips, workshops, and social gatherings for our community members.</p>
-      </section>
-
-      <section>
-        <h2>Join Us</h2>
-        <p>Whether you're new to Istanbul or a long-time resident, join our community and explore the city together!</p>
+      <section style={{marginBottom: '60px'}}>
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center'}}>
+          <img src="/clients/public/tks.png" alt="Event" style={{width: '100%', borderRadius: '12px'}} />
+          <div>
+            <h2>What We Do</h2>
+            <p>We organize cultural events, travel trips...</p>
+          </div>
+        </div>
       </section>
     </div>
   </div>
