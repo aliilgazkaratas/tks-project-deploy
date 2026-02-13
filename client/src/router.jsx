@@ -18,6 +18,7 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/routes/ProtectedRoute';
 import AdminRoute from './components/routes/AdminRoute';
+import ChangePassword from './pages/ChangePassword';
 
 const router = createBrowserRouter([
   {
