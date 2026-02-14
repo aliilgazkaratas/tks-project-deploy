@@ -10,8 +10,8 @@ const userService = {
 
   // Update user profile
   updateProfile: async (data) => {
-    await api.put('/api/users/profile', data);
-    return response.data;
+  const response = await api.put('/api/users/profile', data);
+  return response.data; 
   },
 
   // Change password

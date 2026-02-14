@@ -33,11 +33,10 @@ const handleSubmit = async (e) => {
   setLoading(true);
   
   try {
-    const response = await userService.updateProfile(formData);
+    const updatedUser = await userService.updateProfile(formData);
     
-    // Update both contexts
-    setUser(response);
-    updateUser(response);
+    // Update auth context
+    setUser(updatedUser);
     
     setEditing(false);
     alert('✅ Profile updated successfully!');
