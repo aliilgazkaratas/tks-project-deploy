@@ -147,8 +147,9 @@ const Profile = () => {
                 <label>Date of Birth</label>
                 <input
                   type="date"
-                  value={formData.dateOfBirth ? formData.dateOfBirth.split('T')[0] : ''}
+                  value={formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString().split('T')[0] : ''}
                   onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
+                  max={new Date().toISOString().split('T')[0]}  // Add max date = today
                 />
               </div>
 
