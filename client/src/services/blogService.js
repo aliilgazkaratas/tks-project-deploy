@@ -27,7 +27,7 @@ export const updateBlog = async (id, blogData) => {
 
 // Delete blog (admin)
 export const deleteBlog = async (id) => {
-  const response = await api.delete(`/blogs/${id}`);
+  const response = await api.get(`/api/blogs?${queryString}`);
   return response.data;
 };
 
