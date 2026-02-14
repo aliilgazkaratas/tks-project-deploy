@@ -36,6 +36,27 @@ const confirmRegistration = async () => {
     setLoading(true);
     setError(null);
     
+    const response = await eventService.registerForEvent(event._id);
+    
+    if (response.success) {
+      setSuccess(true);
+      setShowConfirmModal(false);
+      
+      // Show success message
+      alert('✅ Successfully registered! See you at the event!');
+      
+      // Reload to update UI
+      window.location.reload();
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || 'Registration failed');
+  } finally {
+    setLoading(false);
+  }
+  try {
+    setLoading(true);
+    setError(null);
+    
     await eventService.registerForEvent(event._id);
     
     setSuccess(true);

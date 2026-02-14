@@ -3,7 +3,7 @@ import './StaticPage.css';
 const About = () => (
   <div className="about-page">
     <div className="about-hero" style={{
-      backgroundImage: 'url(/clients/public/tks.png)',
+      backgroundImage: 'url(/clients/public/tks.webp)',
       height: '400px',
       backgroundSize: 'cover',
       backgroundPosition: 'center'
@@ -26,7 +26,7 @@ const About = () => (
 
       <section style={{marginBottom: '60px'}}>
         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center'}}>
-          <img src="/clients/public/tks.png" alt="Event" style={{width: '100%', borderRadius: '12px'}} />
+          <img src="/clients/public/tks.webp" alt="Event" style={{width: '100%', borderRadius: '12px'}} />
           <div>
             <h2>What We Do</h2>
             <p>We organize cultural events, travel trips...</p>

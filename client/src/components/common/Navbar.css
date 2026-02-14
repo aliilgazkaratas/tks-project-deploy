@@ -1,45 +1,44 @@
-
 .navbar {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
-  z-index: var(--z-sticky);
-  padding: var(--spacing-4) 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all var(--transition-base);
+  z-index: 100;
+  padding: 16px 0;
 }
 
-.navbar-content {
+.navbar .container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-8);
-}
-
-/* Logo - Enhanced */
-.navbar-logo {
-  display: flex;
   align-items: center;
-  gap: var(--spacing-3);
-  font-size: 1.5rem;
-  font-weight: 800;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
   text-decoration: none;
-  transition: all var(--transition-base);
-  letter-spacing: -0.02em;
 }
 
-.navbar-logo:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
+.navbar-menu {
+  display: flex;
+  gap: 24px;
+  align-items: center;
 }
 
+.navbar-menu a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar-menu a:hover {
+  color: var(--primary);
+}
 .logo-icon {
   font-size: 2rem;
   filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));

@@ -350,7 +350,10 @@ export const registerForEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     
     if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+      return res.status(404).json({ 
+        success: false,
+        message: 'Event not found' 
+      });
     }
 
     // Check if already registered
@@ -360,7 +363,18 @@ export const registerForEvent = async (req, res) => {
     });
 
     if (existingRegistration) {
-      return res.status(400).json({ message: 'Already registered for this event' });
+      return res.status(400).json({ 
+        success: false,
+        message: 'Already registered for this event' 
+      });
+    }
+
+    // Check capacity
+    if (event.currentAttendees >= event.capacity) {
+      return res.status(400).json({
+        success: false,
+        message: 'Event is full'
+      });
     }
 
     // Create registration
@@ -374,11 +388,17 @@ export const registerForEvent = async (req, res) => {
     await event.save();
 
     res.status(201).json({
+      success: true,
       message: 'Successfully registered for event',
       registration
     });
   } catch (error) {
-    res.status(500).json({ message: 'Registration failed', error: error.message });
+    console.error('Registration error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Registration failed', 
+      error: error.message 
+    });
   }
 };
 
