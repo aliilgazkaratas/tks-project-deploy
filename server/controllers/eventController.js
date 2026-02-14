@@ -366,8 +366,7 @@ export const registerForEvent = async (req, res) => {
     // Create registration
     const registration = await Registration.create({
       user: req.user._id,
-      event: req.params.id,
-      status: 'attending'
+      event: req.params.id
     });
 
     // Update event attendee count
