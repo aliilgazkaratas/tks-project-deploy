@@ -38,40 +38,33 @@ const confirmRegistration = async () => {
     
     const response = await eventService.registerForEvent(event._id);
     
-    if (response.success) {
-      setSuccess(true);
-      setShowConfirmModal(false);
-      
-      // Show success message
-      alert('✅ Successfully registered! See you at the event!');
-      
-      // Reload to update UI
-      window.location.reload();
-    }
-  } catch (err) {
-    setError(err.response?.data?.message || 'Registration failed');
-  } finally {
-    setLoading(false);
-  }
-  try {
-    setLoading(true);
-    setError(null);
-    
-    await eventService.registerForEvent(event._id);
-    
     setSuccess(true);
     setShowConfirmModal(false);
     
-    // Refresh event data instead of full reload
+    // Show success toast
+    alert('✅ Successfully registered! See you at the event!');
+    
     setTimeout(() => {
       window.location.reload();
     }, 1000);
   } catch (err) {
-    setError(err.message || 'Registration failed');
+    setShowConfirmModal(false);
+    
+    // Better error messages
+    const errorMessage = err.response?.data?.message || 'Registration failed';
+    
+    if (errorMessage.includes('Already registered')) {
+      alert('ℹ️ You have already registered for this event!');
+    } else if (errorMessage.includes('full')) {
+      alert('⚠️ Sorry, this event is full!');
+    } else {
+      alert('❌ ' + errorMessage);
+    }
   } finally {
     setLoading(false);
   }
-};  return (
+};
+ return (
     <div className="event-details-container">
       {/* Hero Image */}
       <div className="event-hero">

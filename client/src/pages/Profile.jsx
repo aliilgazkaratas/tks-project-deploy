@@ -28,20 +28,26 @@ const Profile = () => {
     'Adventure Sports', 'Art & Museums', 'Nightlife', 'Beach & Water Sports'
   ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const updated = await userService.updateProfile(formData);
-      setUser(updated);
-      setEditing(false);
-      alert('Profile updated successfully!');
-    } catch (err) {
-      alert('Failed to update profile');
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  
+  try {
+    const response = await userService.updateProfile(formData);
+    
+    // Update both contexts
+    setUser(response);
+    updateUser(response);
+    
+    setEditing(false);
+    alert('✅ Profile updated successfully!');
+  } catch (err) {
+    console.error('Update error:', err);
+    alert('❌ Failed to update profile: ' + (err.response?.data?.message || err.message));
+  } finally {
+    setLoading(false);
+  }
+};
 
   const toggleInterest = (interest) => {
     const newInterests = formData.interests.includes(interest)

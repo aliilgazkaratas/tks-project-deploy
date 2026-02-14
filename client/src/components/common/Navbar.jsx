@@ -38,8 +38,9 @@ const Navbar = () => {
               {user?.role === 'admin' && (
                 <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</Link>
               )}
-              <button onClick={handleLogout} className="btn-logout">Logout</button>
-            </>
+<button onClick={handleLogout} className="btn-logout">
+  Logout
+</button>            </>
           ) : (
             <>
               <Link to="/login" onClick={() => setMobileMenuOpen(false)}>Login</Link>
