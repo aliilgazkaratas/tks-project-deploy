@@ -29,10 +29,14 @@ const AdminDashboard = () => {
             <h3>📝 Manage Blogs</h3>
             <p>Create, edit, and publish blog posts</p>
           </Link>
-          <Link to="/admin" className="admin-nav-card">
+          <div 
+            className="admin-nav-card" 
+            onClick={() => setActiveTab('events')}
+            style={{cursor: 'pointer'}}
+          >
             <h3>📅 Manage Events</h3>
             <p>View and manage all events</p>
-          </Link>
+          </div>
           <Link to="/profile" className="admin-nav-card">
             <h3>👤 My Profile</h3>
             <p>Update your admin profile</p>
