@@ -27,20 +27,35 @@ const AdminBlogEditor = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editing) {
-        await blogService.updateBlog(editing, formData);
-      } else {
-        await blogService.createBlog(formData);
-      }
-      resetForm();
-      fetchBlogs();
-    } catch (err) {
-      alert('Failed to save blog');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Validate before sending
+  if (!formData.title.trim()) {
+    alert('❌ Please enter a title');
+    return;
+  }
+  
+  if (!formData.content || formData.content.length < 100) {
+    alert('❌ Content must be at least 100 characters long');
+    return;
+  }
+  
+  try {
+    if (editing) {
+      await blogService.updateBlog(editing, formData);
+      alert('✅ Blog updated successfully!');
+    } else {
+      await blogService.createBlog(formData);
+      alert('✅ Blog published successfully!');
     }
-  };
+    resetForm();
+    fetchBlogs();
+  } catch (err) {
+    console.error('Blog error:', err);
+    alert('❌ Failed to save blog: ' + (err.response?.data?.message || err.message));
+  }
+};
 
   const handleEdit = (blog) => {
     setEditing(blog._id);
@@ -107,8 +122,11 @@ const AdminBlogEditor = () => {
             value={formData.content}
             onChange={(content) => setFormData({...formData, content})}
             modules={modules}
-            placeholder="Write your blog content..."
+            placeholder="Write your blog content... (minimum 100 characters)"
           />
+          <div style={{fontSize: '14px', color: '#666', marginTop: '8px'}}>
+            Character count: {formData.content.replace(/<[^>]*>/g, '').length} / 100 minimum
+          </div>
 
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">
