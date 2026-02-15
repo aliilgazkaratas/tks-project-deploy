@@ -29,14 +29,21 @@ const AdminDashboard = () => {
             <h3>📝 Manage Blogs</h3>
             <p>Create, edit, and publish blog posts</p>
           </Link>
-          <div 
-            className="admin-nav-card" 
-            onClick={() => setActiveTab('events')}
-            style={{cursor: 'pointer'}}
-          >
-            <h3>📅 Manage Events</h3>
-            <p>View and manage all events</p>
-          </div>
+<div 
+  className="admin-nav-card" 
+  onClick={() => {
+    console.log('Manage Events clicked!');
+    setActiveTab('events');
+    window.scrollTo({ 
+      top: document.querySelector('.admin-tabs')?.offsetTop - 100, 
+      behavior: 'smooth' 
+    });
+  }}
+  style={{cursor: 'pointer'}}
+>
+  <h3>📅 Manage Events</h3>
+  <p>View and manage all events</p>
+</div>
           <Link to="/profile" className="admin-nav-card">
             <h3>👤 My Profile</h3>
             <p>Update your admin profile</p>
